@@ -64,15 +64,16 @@ def list_to_line(vals):
 
 def lines_to_board(lines):
 	assert(len(lines)==6)
-	board = top + '\n'
-	board += list_to_line(lines[0]) + '\n' + line_single + '\n'
-	board += list_to_line(lines[1]) + '\n' + line_single + '\n'
-	board += list_to_line(lines[2]) + '\n' + line_double + '\n'
-	board += list_to_line(lines[3]) + '\n' + line_single + '\n'
-	board += list_to_line(lines[4]) + '\n' + line_single + '\n'
-	board += list_to_line(lines[5]) + '\n' + bottom
+	board = '  ' + top + '  \n  '
+	board += list_to_line(lines[0]) + '\n  ' + line_single + '\n  '
+	board += list_to_line(lines[1]) + '\n  ' + line_single + '\n  '
+	board += list_to_line(lines[2]) + '\n  ' + line_double + '\n  '
+	board += list_to_line(lines[3]) + '\n  ' + line_single + '\n  '
+	board += list_to_line(lines[4]) + '\n  ' + line_single + '\n  '
+	board += list_to_line(lines[5]) + '\n  ' + bottom
+	board = ' A' + ' '*25 + 'B\n' + board + '\n C' + ' '*25 + 'D\n'
 	return(board)
-
+	
 def lines_to_quads(lines):
 	q1 = [line[:3] for line in lines[:3]]
 	q2 = [line[3:] for line in lines[:3]]
