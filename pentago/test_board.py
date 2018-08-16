@@ -23,6 +23,9 @@ double_H_double_U = '\u2569'
 double_H_single_D = '\u2564'
 double_H_double_D = '\u2566'
 
+symbols = {1 : 'X', -1 : 'O', 0 : ' '}
+#symbols = {1 : '\u25CB', -1 : '\u25CF', 0 : ' '}
+
 top = (double_DR + 
 	double_H*3 + double_H_single_D +
 	double_H*3 + double_H_single_D +
@@ -55,33 +58,33 @@ bottom = (double_UR +
 	double_H*3 + double_H_single_U +
 	double_H*3 + double_UL)
 
-def list_to_line(vals):
-	assert(len(vals)==6)
+def list_to_rowstr(vals):
+	# input list of values (0,1,-1), output string for row
 	line = list(double_V + ((' '*3 + single_V )*2 + ' '*3 + double_V)*2)
 	for i,v in enumerate(vals):
-		line[2+4*i] = str(v)
+		line[2+4*i] = symbols[v]
 	return ''.join(line)
 
-def lines_to_board(lines):
-	assert(len(lines)==6)
+def array_to_boardstr(arr):
+	# input array of values (0,1,-1), output printable board
 	board = '  ' + top + '  \n  '
-	board += list_to_line(lines[0]) + '\n  ' + line_single + '\n  '
-	board += list_to_line(lines[1]) + '\n  ' + line_single + '\n  '
-	board += list_to_line(lines[2]) + '\n  ' + line_double + '\n  '
-	board += list_to_line(lines[3]) + '\n  ' + line_single + '\n  '
-	board += list_to_line(lines[4]) + '\n  ' + line_single + '\n  '
-	board += list_to_line(lines[5]) + '\n  ' + bottom
-	board = ' A' + ' '*25 + 'B\n' + board + '\n C' + ' '*25 + 'D\n'
+	spacers = [line_single + '\n  ']*2 + [line_double + '\n  ']
+	spacers += [line_single + '\n  ']*2 + [bottom]
+	for i in range(6):
+		board += list_to_rowstr(arr[i])
+		board += '\n  ' + spacers[i]
+	board = (' A' + ' '*25 + 'B\n' + board + '\n C' + ' '*25 + 'D\n')
 	return(board)
 	
-def lines_to_quads(lines):
+def array_to_quads(arr):
+	lines = [list(a) for a in arr]
 	q1 = [line[:3] for line in lines[:3]]
 	q2 = [line[3:] for line in lines[:3]]
 	q3 = [line[:3] for line in lines[3:]]
 	q4 = [line[3:] for line in lines[3:]]
 	return [q1, q2, q3, q4]
 
-def quads_to_lines(quads):
+def quads_to_array(quads):
 	r1 = quads[0][0] + quads[1][0]
 	r2 = quads[0][1] + quads[1][1]
 	r3 = quads[0][2] + quads[1][2]
@@ -96,21 +99,25 @@ def rotate_array_cw(arr):
 def rotate_array_ccw(arr):
 	return [list(a) for a in zip(*arr)][::-1]
 
-def rotate_quadrant(lines, q, dir=1):
-	quads = lines_to_quads(lines)
+def rotate_quadrant(arr, q, dir):
+	quads = array_to_quads(arr)
 	if dir == 1:
 		quads[q] = rotate_array_cw(quads[q])
 	elif dir == -1:
 		quads[q] = rotate_array_ccw(quads[q])
-	return quads_to_lines(quads)
+	return quads_to_array(quads)
 	
 
-lines = [[1,2,3]*2, [4,5,6]*2, [7,8,9]*2]*2
-board = lines_to_board(lines)
+
+import numpy as np
+mask1 = np.random.binomial(1,0.4,[6,6]) == 1
+mask2 = np.random.binomial(1,0.4,[6,6]) == 1
+board = np.zeros([6,6], dtype=int) + mask1 - mask2
+
 print('Example board:')
-print(board)
+print(array_to_boardstr(board))
 
 print('Rotate top right CW and bottom left CCW:')
-lines = rotate_quadrant(lines, 1, 1)
-lines = rotate_quadrant(lines, 2, -1)
-print(lines_to_board(lines))
+board = rotate_quadrant(board, 1, 1)
+board = rotate_quadrant(board, 2, -1)
+print(array_to_boardstr(board))
