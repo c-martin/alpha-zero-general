@@ -62,7 +62,7 @@ class Board():
 
 	def get_valid_moves(self):
 		"Any zero value is a valid move"
-		valid = [m for (m,xy) in zip(self.move_names, self.move_coords) if self.np_pieces[xy]==0]
+		names = [m for (m,xy) in zip(self.move_names, self.move_coords) if self.np_pieces[xy]==0]
 		return [self.np_pieces[xy] == 0 for xy in self.move_coords]
 
 	def get_win_state(self):
