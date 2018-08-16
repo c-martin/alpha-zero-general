@@ -2,8 +2,6 @@ from collections import namedtuple
 from itertools import product
 import numpy as np
 
-import PentagoUtilities as util
-
 DEFAULT_QUADRANT_SIZE = 3
 DEFAULT_WIN_LENGTH = 5
 
