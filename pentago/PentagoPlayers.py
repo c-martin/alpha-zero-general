@@ -25,7 +25,7 @@ class HumanPentagoPlayer():
 			if move in moves:
 				id = moves.index(move)
 				if valids[id]: break
-				else: print('Illegal move')
+				else: print('Illegal move, please choose a different move: ')
 			else:
 				id = int(np.random.choice(np.where(valids)[0]))
 				print('Invalid move, please enter a move like ' + moves[id] + ':')
