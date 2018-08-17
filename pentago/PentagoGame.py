@@ -65,7 +65,21 @@ class PentagoGame(Game):
 
 	def getSymmetries(self, board, pi):
 		"""Board is left/right board symmetric"""
-		return [(board, pi), (board[:, ::-1], pi[::-1])]
+		#return [(board, pi), (board[:, ::-1], pi[::-1])]
+		        # mirror, rotational
+        assert(len(pi) == self.n**2+1)  # 1 for pass
+        pi_board = np.reshape(pi[:-1], (self.n, self.n))
+        sym = []
+
+        for i in range(1, 5):
+            for j in [True, False]:
+                newB = np.rot90(board, i)
+                newPi = np.rot90(pi_board, i)
+                if j:
+                    newB = np.fliplr(newB)
+                    newPi = np.fliplr(newPi)
+                sym += [(newB, list(newPi.ravel()) + [pi[-1]])]
+        return sym
 
 	def stringRepresentation(self, board):
 		return str(self._base_board.with_np_pieces(np_pieces=board))
