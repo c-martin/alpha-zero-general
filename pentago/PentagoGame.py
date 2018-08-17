@@ -37,7 +37,10 @@ class PentagoGame(Game):
 
 	def getValidMoves(self, board, player):
 		"Any zero value in top row in a valid move"
-		return self._base_board.with_np_pieces(np_pieces=board).get_valid_moves()
+		b = self._base_board.with_np_pieces(np_pieces=board)
+		moves = b.get_valid_moves()
+		return [m in moves for m in b.move_names]
+		
 
 	def getGameEnded(self, board, player):
 		b = self._base_board.with_np_pieces(np_pieces=board)

@@ -5,15 +5,10 @@ class RandomPlayer():
 	def __init__(self, game):
 		self.game = game
 
-	def play(self, board):
-		"""
-		a = np.random.randint(self.game.getActionSize())
+	def play(self, board):			
 		valids = self.game.getValidMoves(board, 1)
-		while valids[a] != 1:
-			a = np.random.randint(self.game.getActionSize())
-		return a
-		"""
-		return np.random.choice(self.game.getValidMoves(board, 1))
+		id = int(np.random.choice(np.where(valids)[0]))
+		return id
 
 
 class HumanPentagoPlayer():
@@ -21,14 +16,20 @@ class HumanPentagoPlayer():
 		self.game = game
 
 	def play(self, board):
-		valid_moves = self.game.getValidMoves(board, 1)
-		print('\nMoves:', [i for (i, valid) in enumerate(valid_moves) if valid])
-
+		valids = self.game.getValidMoves(board, 1)
+		moves = self.game._base_board.with_np_pieces(np_pieces=board).move_names
+		
+		print('\nEnter a move: ')
 		while True:
-			move = int(input())
-			if valid_moves[move]: break
-			else: print('Invalid move')
-		return move
+			move = input().upper()
+			if move in moves:
+				id = moves.index(move)
+				if valids[id]: break
+				else: print('Illegal move')
+			else:
+				id = int(np.random.choice(np.where(valids)[0]))
+				print('Invalid move, please enter a move like ' + moves[id] + ':')
+		return id
 
 
 class OneStepLookaheadPentagoPlayer():
