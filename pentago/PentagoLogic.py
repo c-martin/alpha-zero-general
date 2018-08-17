@@ -43,7 +43,7 @@ class Board():
 		
 	def execute_move(self, move, player):
 		"Move is a string: 'qXqD', where q=[A,B,C,D], X=keypad(1-9), D=+/-"
-		if type(move) == int:
+		if type(move) != str:
 			move = self.move_names[move]
 			
 		x,y = np.unravel_index(int(move[1])-1, (self.quadrant_size, self.quadrant_size))
@@ -64,8 +64,8 @@ class Board():
 	def get_valid_moves(self):
 		"Any zero value is a valid move"
 		moves = [m for (m,xy) in zip(self.move_names, self.move_coords) if self.np_pieces[xy]==0]
-		flags = [self.np_pieces[xy] == 0 for xy in self.move_coords]
-		xylist = [xy for xy in self.move_coords if self.np_pieces[xy]==0]
+		#flags = [self.np_pieces[xy] == 0 for xy in self.move_coords]
+		#xylist = [xy for xy in self.move_coords if self.np_pieces[xy]==0]
 		return moves
 
 	def get_win_state(self):
