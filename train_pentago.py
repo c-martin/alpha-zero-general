@@ -2,7 +2,7 @@ import Arena
 from MCTS import MCTS
 from pentago.PentagoGame import PentagoGame, display
 from pentago.PentagoPlayers import *
-from pentago.tensorflow.NNet import NNetWrapper as NNet
+#from pentago.tensorflow.NNet import NNetWrapper as NNet
 
 import numpy as np
 from utils import *
@@ -35,5 +35,6 @@ n1p = lambda x: np.argmax(mcts1.getActionProb(x, temp=0))
 #n2p = lambda x: np.argmax(mcts2.getActionProb(x, temp=0))
 
 #arena = Arena.Arena(n1p, hp, g, display=display)
-arena = Arena.Arena(rp, hp, g, display=display)
-print(arena.playGames(2, verbose=True))
+arena = Arena.Arena(rp, rp, g, display=display)
+#arena = Arena.Arena(hp, rp, g, display=display)
+print(arena.playGames(10, verbose=True))
