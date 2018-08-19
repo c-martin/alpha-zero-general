@@ -5,7 +5,7 @@ sys.path.append('..')
 from Game import Game
 from .PentagoLogic import Board
 
-from .PentagoUtilities import array_to_boardstr
+from .PentagoUtilities import array_to_boardstr, sym_board, sym_moves
 
 
 class PentagoGame(Game):
@@ -82,7 +82,11 @@ class PentagoGame(Game):
                 sym += [(newB, list(newPi.ravel()) + [pi[-1]])]
         return sym
         """
-        return [(board, pi)]
+        sym = []
+        for i in range(8):
+            sym += [(sym_board(board,i), sym_moves(pi,i))]
+        return sym
+        #return [(board, pi)]
 
     def stringRepresentation(self, board):
         return str(self._base_board.with_np_pieces(np_pieces=board))
