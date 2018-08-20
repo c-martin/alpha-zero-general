@@ -17,7 +17,7 @@ g = PentagoGame()
 # all players
 rp = RandomPlayer(g).play
 #gp = GreedyPentagoPlayer(g).play
-#hp = HumanPentagoPlayer(g).play
+hp = HumanPentagoPlayer(g).play
 
 # nnet players
 n1 = NNet(g)
@@ -33,7 +33,9 @@ n1p = lambda x: np.argmax(mcts1.getActionProb(x, temp=0))
 #mcts2 = MCTS(g, n2, args2)
 #n2p = lambda x: np.argmax(mcts2.getActionProb(x, temp=0))
 
-#arena = Arena.Arena(n1p, hp, g, display=display)
-arena = Arena.Arena(n1p, rp, g, display=display)
-#arena = Arena.Arena(hp, rp, g, display=display)
-print(arena.playGames(200, verbose=False))
+play_network = Arena.Arena(n1p, hp, g, display=display)
+test_network = Arena.Arena(n1p, rp, g, display=display)
+play_random = Arena.Arena(hp, rp, g, display=display)
+test_random = Arena.Arena(rp, rp, g, display=display)
+#print(test_network.playGames(100, verbose=False))
+print(play_network.playGames(2, verbose=True))
