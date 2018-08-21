@@ -16,26 +16,25 @@ g = PentagoGame()
 
 # all players
 rp = RandomPlayer(g).play
-#gp = GreedyPentagoPlayer(g).play
 hp = HumanPentagoPlayer(g).play
 
 # nnet players
-n1 = NNet(g)
-n1.load_checkpoint('./pretrained_models/pentago/keras/','best.pth.tar')
-args1 = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
-mcts1 = MCTS(g, n1, args1)
-n1p = lambda x: np.argmax(mcts1.getActionProb(x, temp=0))
+def nn_player_from_ckpt(g, path='./pretrained_models/pentago/keras/', filename='best.pth.tar'):
+	nn = NNet(g)
+	nn.load_checkpoint(path, filename)
+	args = dotdict({'numMCTSSims': 50, 'cpuct':1.0})
+	mcts = MCTS(g, nn, args)
+	nnp = lambda x: np.argmax(mcts.getActionProb(x, temp=0))
+	return nnp
 
-
-#n2 = NNet(g)
-#n2.load_checkpoint('/dev/8x50x25/','best.pth.tar')
-#args2 = dotdict({'numMCTSSims': 25, 'cpuct':1.0})
-#mcts2 = MCTS(g, n2, args2)
-#n2p = lambda x: np.argmax(mcts2.getActionProb(x, temp=0))
+n1p = nn_player_from_ckpt(g, filename='checkpoint_63.pth.tar')
+n2p = nn_player_from_ckpt(g, filename='checkpoint_40.pth.tar')
 
 play_network = Arena.Arena(n1p, hp, g, display=display)
 test_network = Arena.Arena(n1p, rp, g, display=display)
+pit_networks = Arena.Arena(n1p, n2p, g, display=display)
 play_random = Arena.Arena(hp, rp, g, display=display)
 test_random = Arena.Arena(rp, rp, g, display=display)
-#print(test_network.playGames(100, verbose=False))
-print(play_network.playGames(2, verbose=True))
+#print(play_network.playGames(2, verbose=True))
+#print(pit_networks.playGames(100, verbose=False))
+print(test_network.playGames(20, verbose=False))
