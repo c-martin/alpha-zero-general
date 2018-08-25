@@ -7,17 +7,17 @@ args = dotdict({
     'numIters': 100,
     'numEps': 100,
     'tempThreshold': 15,
-    'updateThreshold': 0.6,
+    'updateThreshold': 0.55,
     'maxlenOfQueue': 200000,
-    'numMCTSSims': 90000,
+    'numMCTSSims': 600,
     'arenaCompare': 50,
     'cpuct': 1,
 
     'checkpoint': './temp/',
     'load_model': True,
     #'load_folder_file': ('/dev/models/8x100x50','best.pth.tar'),
-    'load_folder_file': ('./temp/','best.pth.tar'),
-    'numItersForTrainExamplesHistory': 50,
+    'load_folder_file': ('./temp/','checkpoint_81.pth.tar'),
+    'numItersForTrainExamplesHistory': 20,
 
 })
 
